@@ -6,10 +6,6 @@ Proje dosyaları, Windows Server üzerinde kurulu IIS (Internet Information Serv
 
 Bunun için IIS üzerinde yeni bir Web Site oluşturularak proje dosyalarının bulunduğu dizin yayın klasörü olarak tanımlanmalıdır.
 
-**Proje dizini:**
-```text
-/opt/IISDescription
-```
 
 ## 2. Linux Docker Container Üzerinde Çalıştırma
 
