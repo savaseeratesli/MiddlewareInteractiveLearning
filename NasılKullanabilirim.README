@@ -1,1 +1,86 @@
+# IISDescription – Kurulum ve Çalıştırma Rehberi
+
+## 1. Windows Server Üzerinde Çalıştırma
+
+Proje dosyaları, Windows Server üzerinde kurulu IIS (Internet Information Services) üzerinden yayınlanabilir.
+
+Bunun için IIS üzerinde yeni bir Web Site oluşturularak proje dosyalarının bulunduğu dizin yayın klasörü olarak tanımlanmalıdır.
+
+**Proje dizini:**
+```text
+/opt/IISDescription
+```
+
+## 2. Linux Docker Container Üzerinde Çalıştırma
+
+Proje, IIS bağımlılığı bulunmayan statik web içeriği olarak Nginx kullanılarak Docker Container üzerinde çalıştırılabilir.
+
+### 2.1. Dockerfile Oluşturma
+
+Proje dizinine geçiş yapın:
+
+```bash
+cd /opt/IISDescription
+```
+
+Aşağıdaki komut ile Dockerfile oluşturun:
+
+```dockerfile
+FROM nginx:alpine
+
+COPY . /usr/share/nginx/html/
+
+EXPOSE 80
+
+CMD ["nginx", "-g", "daemon off;"]
+```
+
+### 2.2. Docker Image Oluşturma
+
+Proje dizininde aşağıdaki komutu çalıştırarak Docker image oluşturun:
+
+```bash
+docker build -t iisdescription:v1 .
+```
+
+### 2.3. Docker Container Başlatma
+
+Oluşturulan image üzerinden container başlatmak için:
+
+```bash
+docker run -d \
+  --name iisdescription \
+  -p 8080:80 \
+  --restart unless-stopped \
+  iisdescription:v1
+```
+
+### 2.4. Container Kontrolü
+
+Container durumunu kontrol etmek için:
+
+```bash
+docker ps
+```
+
+Container loglarını görüntülemek için:
+
+```bash
+docker logs iisdescription
+```
+
+### 2.5. Uygulamaya Erişim
+
+Container başarılı şekilde başlatıldıktan sonra uygulamaya aşağıdaki adres üzerinden erişilebilir:
+
+```text
+http://SUNUCU_IP:8080
+```
+
+**Not:** Sunucunun 8080/TCP portunun erişime açık olması gerekmektedir.
+
+## 3. Önemli Bilgilendirme
+
+- Windows Server ortamında proje IIS üzerinden yayınlanabilir.
+- Linux Docker ortamında Nginx kullanılarak yayın yapılabilir.
 
